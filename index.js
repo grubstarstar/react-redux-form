@@ -41,7 +41,7 @@ export * from './actions'
 	(dispatch, ownProps) => ({
 		onLoad: () => dispatch(initialiseForm(ownProps.formName)),
 		setDirty: () => dispatch(setDirty(ownProps.formName)),
-		setSubmitting: (isSubmitting) => dispatch(setSubmitting(ownProps.formName, isSubmitting)),
+		stopSubmitting: () => dispatch(setSubmitting(ownProps.formName, null)),
 		removeForm: () => dispatch(removeForm(ownProps.formName)),
 	})
 )
@@ -59,7 +59,7 @@ export class Form extends PureComponent {
 	}
 	componentWillReceiveProps(nextProps) {
 		if(!this.props.isSubmitting && nextProps.isSubmitting) {
-			this.submit()
+			this.submit(nextProps)
 		}
 	}
 	componentWillUnmount() {
@@ -67,12 +67,12 @@ export class Form extends PureComponent {
 			this.props.removeForm()
 		}
 	}
-	submit() {
+	submit(nextProps) {
 		this.props.setDirty()
 		if(this.props.errors.filter(v => v).count() === 0) {
-			this.props.onSubmit(this.props.values && this.props.values.toJS())
+			this.props.onSubmit(this.props.values && this.props.values.toJS(), nextProps.isSubmitting)
 		} else {
-			this.props.setSubmitting(false)
+			this.props.stopSubmitting()
 			if(this.props.onValidationFailure) this.props.onValidationFailure(this.props.errors)
 		}
 	}
@@ -283,7 +283,7 @@ export class RadioButtons extends PureComponent {
 		//    return this.props.renderField({...this.props, selectOption: this.selectOption})
 		// }
 		return (
-			<View style={{ flexDirection: 'row' }}>
+			<View style={[{ flexDirection: 'row' }, this.props.style]}>
 				{ React.Children.map(this.props.children, child => {
 					return React.cloneElement(child, {
 						formName: this.props.formName,
@@ -341,11 +341,14 @@ RadioButtons.Option = RadioOption
 		isSubmitting: state.getIn([ 'forms', ownProps.formName, '_meta', 'isSubmitting' ]),
 	}),
 	(dispatch, ownProps) => ({
-		submit: () => dispatch(setSubmitting(ownProps.formName, true)),
+		submit: () => dispatch(setSubmitting(ownProps.formName, ownProps.name || 'submit')),
 	})
 )
 export class Submit extends PureComponent {
 	render() {
+		if(this.props.renderField) {
+			return this.props.renderField(this.props)
+		}
 		return (
 			<TouchableOpacity
 				style={[ styles.submit, this.props.style ]}

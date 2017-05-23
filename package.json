@@ -11,10 +11,22 @@
         "type": "range"
       },
       "/Users/richg/git/RateMyAgentApp"
+    ],
+    [
+      {
+        "raw": "@dc-react-native/react-redux-form@^0.1.5",
+        "scope": "@dc-react-native",
+        "escapedName": "@dc-react-native%2freact-redux-form",
+        "name": "@dc-react-native/react-redux-form",
+        "rawSpec": "^0.1.5",
+        "spec": ">=0.1.5 <0.2.0",
+        "type": "range"
+      },
+      "/Users/richg/git/RateMyAgentApp"
     ]
   ],
-  "_from": "@dc-react-native/react-redux-form@>=0.1.3 <0.2.0",
-  "_id": "@dc-react-native/react-redux-form@0.1.4",
+  "_from": "@dc-react-native/react-redux-form@^0.1.5",
+  "_id": "@dc-react-native/react-redux-form@0.1.5",
   "_inCache": true,
   "_location": "/@dc-react-native/react-redux-form",
   "_nodeVersion": "6.10.1",
@@ -22,22 +34,22 @@
   "_npmVersion": "3.10.10",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "@dc-react-native/react-redux-form@^0.1.3",
+    "raw": "@dc-react-native/react-redux-form@^0.1.5",
     "scope": "@dc-react-native",
     "escapedName": "@dc-react-native%2freact-redux-form",
     "name": "@dc-react-native/react-redux-form",
-    "rawSpec": "^0.1.3",
-    "spec": ">=0.1.3 <0.2.0",
+    "rawSpec": "^0.1.5",
+    "spec": ">=0.1.5 <0.2.0",
     "type": "range"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "http://npm.digitalcastle.com.au:4875/@dc-react-native%2freact-redux-form/-/react-redux-form-0.1.4.tgz",
-  "_shasum": "621e1ff8514862c97c607f5fab8c742746c89aed",
+  "_resolved": "http://npm.digitalcastle.com.au:4875/@dc-react-native%2freact-redux-form/-/react-redux-form-0.1.5.tgz",
+  "_shasum": "deacb7b88958a6bb307575008160db9ac566b165",
   "_shrinkwrap": null,
-  "_spec": "@dc-react-native/react-redux-form@^0.1.3",
+  "_spec": "@dc-react-native/react-redux-form@^0.1.5",
   "_where": "/Users/richg/git/RateMyAgentApp",
   "author": {
     "name": "Richard Garner",
@@ -47,8 +59,8 @@
   "description": "components, reducers and actions for building forms in React Native.",
   "devDependencies": {},
   "dist": {
-    "shasum": "621e1ff8514862c97c607f5fab8c742746c89aed",
-    "tarball": "http://npm.digitalcastle.com.au:4875/@dc-react-native%2freact-redux-form/-/react-redux-form-0.1.4.tgz"
+    "shasum": "deacb7b88958a6bb307575008160db9ac566b165",
+    "tarball": "http://npm.digitalcastle.com.au:4875/@dc-react-native%2freact-redux-form/-/react-redux-form-0.1.5.tgz"
   },
   "keywords": [
     "redux",
@@ -70,5 +82,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "0.2.2"
+  "version": "0.1.5"
 }
