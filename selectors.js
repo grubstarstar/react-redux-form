@@ -1,3 +1,5 @@
+import { Map } from 'immutable'
+
 import {
 	TEXT_FIELD,
 	RADIO_GROUP,

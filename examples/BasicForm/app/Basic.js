@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
-import { Iterable } from 'immutable'
+import { View, Text, Alert } from 'react-native'
+import { Iterable, Map } from 'immutable'
 import { Provider, connect } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 import { combineReducers } from 'redux-immutable'
@@ -37,7 +38,10 @@ const BasicForm = createForm('basic')
 	}),
 	dispatch => ({
 		onSubmit: (fieldValues) => {
-			console.log('fieldValues', fieldValues)
+			Alert.alert(
+				'Form submitted...',
+				JSON.stringify(fieldValues),
+			)
 			setTimeout(() => dispatch(BasicForm.submitSuccess()), 500)
 		}
 	})
@@ -45,19 +49,28 @@ const BasicForm = createForm('basic')
 class App extends PureComponent {
 	render() {
 		return (
-			<BasicForm
-				onSubmit={this.props.onSubmit}>
-				<TextField
-					name="field-1"
-					defaultValue="default value"
-					getValidationError={val => (isNaN(val) || val < 5) && 'Must enter a number 5 or above'}
-				/>
-				<TextField
-					name="field-2"
-					defaultValue="some default"
-				/>
-				<Submit/>
-			</BasicForm>
+			<View style={{ flex: 1, justifyContent: 'flex-start' }}>
+				<BasicForm
+					style={{ flex: null }}
+					onSubmit={this.props.onSubmit}>
+					<TextField
+						name="field-1"
+						defaultValue="default value"
+						getValidationError={val => (isNaN(val) || val < 5) && 'Must enter a number 5 or above'}
+					/>
+					<TextField
+						name="field-2"
+						defaultValue="some default"
+					/>
+					<Submit/>
+				</BasicForm>
+				<View style={{ flex: 1, marginTop: 20, alignSelf: 'center' }}>
+					<Text style={{ fontWeight: 'bold' }}>Current field values</Text>
+					{
+						this.props.values.map((val, fieldName) => <Text key={fieldName}>{fieldName}: {val}</Text>).valueSeq().toArray()
+					}
+				</View>
+			</View>
 		)
 	}
 }
