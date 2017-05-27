@@ -55,7 +55,9 @@
     "name": "Richard Garner",
     "email": "rich.garner@ratemyagent.com"
   },
-  "dependencies": {},
+  "dependencies": {
+    "uuid": "^3.0.1"
+  },
   "description": "components, reducers and actions for building forms in React Native.",
   "devDependencies": {},
   "dist": {

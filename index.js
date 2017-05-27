@@ -9,6 +9,7 @@ import {
 	Picker
 } from 'react-native'
 import { connect } from 'react-redux'
+import uuidV4 from 'uuid/v4'
 import {
 	initialiseForm,
 	initialiseField,
@@ -39,16 +40,16 @@ export * from './actions'
 		isSubmitting: isFormSubmitting(state, ownProps.formName),
 	}),
 	(dispatch, ownProps) => ({
-		onLoad: () => dispatch(initialiseForm(ownProps.formName)),
+		onLoad: (internalId) => dispatch(initialiseForm(ownProps.formName, internalId)),
 		setDirty: () => dispatch(setDirty(ownProps.formName)),
 		stopSubmitting: () => dispatch(setSubmitting(ownProps.formName, null)),
-		removeForm: () => dispatch(removeForm(ownProps.formName)),
+		removeForm: (internalId) => dispatch(removeForm(ownProps.formName, internalId)),
 	})
 )
 export class Form extends PureComponent {
 	constructor(props) {
 		super(props)
-		this.props.onLoad()
+		this.props.onLoad(this.props._internalId)
 		this.submit = this.submit.bind(this)
 		this._children = React.Children.map(this.props.children, child => {
 			// TODO: this should probably detect whether they type is one of our field types or A DERIVITIVE THEREOF
@@ -64,7 +65,7 @@ export class Form extends PureComponent {
 	}
 	componentWillUnmount() {
 		if(!this.props.persist) {
-			this.props.removeForm()
+			this.props.removeForm(this.props._internalId)
 		}
 	}
 	submit(nextProps) {
@@ -112,10 +113,11 @@ export class TextField extends PureComponent {
 	setFieldValue(val) {
 		val = this.props.inflate ? this.props.inflate(val) : val
 		this.props.setFieldValue(val)
-		if(this.props.getValidationError) {
-			let err = this.props.getValidationError(val)
-			this.props.setFieldError(err)
+		let err = null
+      if(this.props.getValidationError) {
+			err = this.props.getValidationError(val)
 		}
+		this.props.setFieldError(err)
 	}
 	render() {
 		if(this.props.renderField) {
@@ -283,7 +285,7 @@ export class RadioButtons extends PureComponent {
 		//    return this.props.renderField({...this.props, selectOption: this.selectOption})
 		// }
 		return (
-			<View style={[{ flexDirection: 'row' }, this.props.style]}>
+			<View style={[{ flexDirection: 'row' }, this.props.style, this.props.isDirty && this.props.error && this.props.errorStyle ]}>
 				{ React.Children.map(this.props.children, child => {
 					return React.cloneElement(child, {
 						formName: this.props.formName,
@@ -366,16 +368,25 @@ export class Submit extends PureComponent {
  * Creates a form and ties to a key for use in the store.
  */
 export function createForm(formName) {
+	const _internalId = uuidV4()
 	class FormWrapper extends PureComponent {
+		constructor(props) {
+			super(props)
+			// this is used in removeForm to ensure we don't remove the state
+			// of a new form of the same name which could have been mounted before
+			// the previous instance has had chance to call it's removeForm.
+			this._internalId = uuidV4()
+		}
 		render() {
-			return <Form {...this.props} formName={formName}/>
+			return <Form {...this.props} _internalId={_internalId} formName={formName}/>
 		}
 	}
+	FormWrapper.submit = (submitButtonName) => setSubmitting(formName, submitButtonName || 'submit')
 	FormWrapper.submitSuccess = (...args) => submitSuccess(formName, ...args)
 	FormWrapper.submitFailure = (...args) => submitFailure(formName, ...args)
 	FormWrapper.setFieldError = (...args) => setFieldError(formName, ...args)
 	FormWrapper.setFieldErrors = (...args) => setFieldErrors(formName, ...args)
 	FormWrapper.getError = (state, fieldName) => getError(state, formName, fieldName)
-	FormWrapper.remove = () => removeForm(formName)
+	FormWrapper.remove = () => removeForm(formName, _internalId)
 	return FormWrapper
 }

@@ -20,10 +20,11 @@ export const reducer = (state = initialState, action) => {
 			return state.set(
 				action.formName,
 				new Map({
-					fields: state.getIn([ action.formName, 'fields' ]) || new Map(action.initialValues),
+					fields: state.getIn([ action.formName, 'fields' ]) || new Map(),
 					_meta: new Map({
 						isDirty: state.getIn([ action.formName, '_meta', 'isDirty' ]) || false,
 						isSubmitting: state.getIn([ action.formName, '_meta', 'isSubmitting' ]) || false,
+						internalId: state.getIn([ action.formName, '_meta', 'internalId' ]) || action.internalId,
 					})
 				})
 			)
@@ -55,7 +56,9 @@ export const reducer = (state = initialState, action) => {
 				? state.setIn([ action.formName, '_meta', 'isSubmitting' ], action.isSubmitting)
 				: state
 		case REMOVE_FORM:
-			return state.delete(action.formName)
+			return state.getIn([ action.formName, '_meta', 'internalId' ]) === action.internalId
+				? state.delete(action.formName)
+				: state
 		case ENSURE_RADIO_BUTTON_INITIALISED:
 			return state.updateIn([ action.formName, 'fields', action.radioGroup, 'options', action.optionName ], val => (val || action.optionValue))
 		case SELECT_OPTION:

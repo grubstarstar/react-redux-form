@@ -4,8 +4,8 @@ import {
 } from './constants'
 
 export const getError = (state, formName, fieldName) => (
-   state.getIn([ 'forms', formName, 'isDirty' ])
-   && state.getIn([ 'forms', formName, fieldName, 'error' ])
+   state.getIn([ 'forms', formName, '_meta', 'isDirty' ])
+   && state.getIn([ 'forms', formName, 'fields', fieldName, 'error' ])
 )
 // ^ do we need this?
 

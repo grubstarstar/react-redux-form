@@ -1,3 +1,5 @@
+import { Map } from 'immutable'
+
 import {
    SET_FIELD_VALUE,
    SET_FIELD_ERROR,
@@ -11,9 +13,9 @@ import {
    SET_RADIO_GROUP_OPTION_VALUE,
 } from './constants'
 
-export const initialiseForm = (formName, initialValues) => ({
+export const initialiseForm = (formName, internalId) => ({
    type: INITIALISE_FORM,
-   formName, initialValues
+   formName, internalId
 })
 
 export const initialiseField = (formName, fieldName, fieldType) => ({
@@ -37,8 +39,8 @@ export const setFieldError = (formName, fieldName, fieldError) => ({
 
 export const setFieldErrors = (formName, fieldErrors = []) => {
    return (dispatch) => {
-      fieldErrors.forEach((err, fieldName) => {
-         dispatch(setFieldError(formName, fieldName, err))
+      Map(fieldErrors).forEach((fieldError, fieldName) => {
+         dispatch(setFieldError(formName, fieldName, fieldError))
       })
    }
 }
@@ -67,9 +69,9 @@ export const submitFailure = (formName, fieldErrors) => {
    }
 }
 
-export const removeForm = (formName) => ({
+export const removeForm = (formName, internalId) => ({
    type: REMOVE_FORM,
-   formName
+   formName, internalId
 })
 
 /* for radio button groups */
