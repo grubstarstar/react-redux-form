@@ -1,6 +1,6 @@
 {
   "name": "@grubstarstar/react-redux-form",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Forms and fields for React Native with redux",
   "main": "index.js",
   "directories": {
