@@ -32,7 +32,9 @@ const store = createStore(
 const BasicForm = createForm('basic')
 
 @connect(
-	null,
+	state => ({
+		values: BasicForm.getFormValues(state)
+	}),
 	dispatch => ({
 		onSubmit: (fieldValues) => {
 			console.log('fieldValues', fieldValues)

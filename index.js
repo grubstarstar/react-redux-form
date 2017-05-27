@@ -387,6 +387,7 @@ export function createForm(formName) {
 	FormWrapper.setFieldError = (...args) => setFieldError(formName, ...args)
 	FormWrapper.setFieldErrors = (...args) => setFieldErrors(formName, ...args)
 	FormWrapper.getError = (state, fieldName) => getError(state, formName, fieldName)
+	FormWrapper.getFormValues = (state) => getFormValues(state, formName)
 	FormWrapper.remove = () => removeForm(formName, _internalId)
 	return FormWrapper
 }
