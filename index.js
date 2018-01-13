@@ -270,7 +270,7 @@ export class RadioButtons extends PureComponent {
 		this.props.initialiseField()
 		this.selectOption = this.selectOption.bind(this)
 		this.getValidationError = this.getValidationError.bind(this)
-		this.selectOption(this.props.selectedOption)
+		this.selectOption(this.props.selectedOption || this.props.defaultSelection)
 	}
 	getValidationError(optionName) {
 		return null

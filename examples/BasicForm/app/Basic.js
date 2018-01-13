@@ -37,12 +37,18 @@ const BasicForm = createForm('basic')
 		values: BasicForm.getFormValues(state)
 	}),
 	dispatch => ({
-		onSubmit: (fieldValues) => {
-			Alert.alert(
-				'Form submitted...',
-				JSON.stringify(fieldValues),
-			)
-			setTimeout(() => dispatch(BasicForm.submitSuccess()), 500)
+		onSubmit: (fieldValues, submitButtonName) => {
+			setTimeout(() => {
+				submitButtonName === 'submitWithError'
+					? dispatch(BasicForm.submitFailure({
+						'field-2': 'This is a server side field validation error for "field-2"'
+					}))
+					: dispatch(BasicForm.submitSuccess())
+				Alert.alert(
+					'Form submitted...',
+					JSON.stringify(fieldValues),
+				)
+			}, 1500)
 		}
 	})
 )
@@ -63,6 +69,7 @@ class App extends PureComponent {
 						defaultValue="some default"
 					/>
 					<Submit/>
+					<Submit name="submitWithError" title="Submit (fake server side validation error)"/>
 				</BasicForm>
 				<View style={{ flex: 1, marginTop: 20, alignSelf: 'center' }}>
 					<Text style={{ fontWeight: 'bold' }}>Current field values</Text>
